@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইভেন্ট ব্যবস্থাপনা সিস্টেম</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'SolaimanLipi', sans-serif;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #e74c3c;
+            --accent: #3498db;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --success: #27ae60;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* হেডার স্টাইল */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-image {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        
+        .logo-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .active {
+            background-color: var(--secondary);
+        }
+        
+        /* হিরো সেকশন */
+        .hero {
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.9)), url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* মেইন কন্টেন্ট */
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            color: var(--primary);
+            position: relative;
+            font-size: 2.2rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: var(--secondary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* ইভেন্ট সেকশন */
+        .events-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .event-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .event-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .event-content {
+            padding: 20px;
+        }
+        
+        .event-content h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .event-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .event-meta i {
+            color: var(--accent);
+            margin-right: 5px;
+        }
+        
+        /* কাস্টমাইজ সেকশন */
+        .customize-section {
+            background-color: var(--light);
+            padding: 60px 0;
+            margin: 50px 0;
+        }
+        
+        .customize-form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent);
+            outline: none;
+        }
+        
+        .image-preview {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            margin-top: 15px;
+            display: block;
+        }
+        
+        /* ফুটার */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 50px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: var(--light);
+        }
+        
+        .footer-column p, .footer-column a {
+            color: #bbb;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        
+        .footer-column a:hover {
+            color: white;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icons a:hover {
+            background-color: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #bbb;
+            font-size: 0.9rem;
+        }
+        
+        /* রেসপনসিভ ডিজাইন */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .customize-form {
+                padding: 20px;
+            }
+        }
+        
+        /* কাস্টম এনিমেশন */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        /* ইভেন্ট ম্যানেজমেন্ট স্টাইল */
+        .management-info {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+            border-left: 5px solid var(--success);
+        }
+        
+        .management-info h3 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .management-info ul {
+            margin-left: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .management-info li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        .highlight {
+            color: var(--secondary);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <!-- হেডার সেকশন -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <img id="logoImage" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="লোগো ছবি" class="logo-image">
+                    <div class="logo-text">
+                        <h1 id="siteTitle">আপনার ইভেন্ট ব্যবস্থাপনা</h1>
+                        <p>সকল ধরনের ইভেন্টের একক সমাধান</p>
+                    </div>
+                </div>
+                
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">হোম</a></li>
+                        <li><a href="#events">ইভেন্টসমূহ</a></li>
+                        <li><a href="#customize">কাস্টমাইজ</a></li>
+                        <li><a href="#management">ব্যবস্থাপনা</a></li>
+                        <li><a href="#contact">যোগাযোগ</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- হিরো সেকশন -->
+    <section class="hero">
+        <div class="container">
+            <h2>পেশাদার ইভেন্ট ব্যবস্থাপনা সমাধান</h2>
+            <p>আমরা আপনাকে সাহায্য করি স্মরণীয় ইভেন্ট আয়োজনে। জন্মদিন, বিবাহ, কর্পোরেট ইভেন্ট বা যে কোনো সামাজিক অনুষ্ঠান - আমরা সবকিছুর ব্যবস্থাপনা করি।</p>
+            <a href="#events" class="btn">ইভেন্টগুলো দেখুন</a>
+        </div>
+    </section>
+
+    <!-- ইভেন্টস সেকশন -->
+    <section id="events" class="container">
+        <h2 class="section-title">আসন্ন ইভেন্টসমূহ</h2>
+        <div class="events-container">
+            <!-- ইভেন্ট কার্ডগুলো জাভাস্ক্রিপ্ট দ্বারা তৈরি হবে -->
+        </div>
+    </section>
+
+    <!-- কাস্টমাইজ সেকশন -->
+    <section id="customize" class="customize-section">
+        <div class="container">
+            <h2 class="section-title">আপনার সাইট কাস্টমাইজ করুন</h2>
+            <div class="customize-form">
+                <div class="form-group">
+                    <label for="titleInput">ওয়েবসাইটের শিরোনাম</label>
+                    <input type="text" id="titleInput" class="form-control" placeholder="আপনার ইভেন্ট ব্যবস্থাপনার নাম লিখুন">
+                </div>
+                
+                <div class="form-group">
+                    <label for="imageInput">আপনার লোগো/ছবি আপলোড করুন</label>
+                    <input type="file" id="imageInput" class="form-control" accept="image/*">
+                    <img id="imagePreview" src="https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="ছবি প্রিভিউ" class="image-preview">
+                </div>
+                
+                <div class="form-group">
+                    <label for="sloganInput">সাইটের স্লোগান/বর্ণনা</label>
+                    <textarea id="sloganInput" class="form-control" rows="3" placeholder="আপনার ব্যবস্থাপনার সংক্ষিপ্ত বর্ণনা লিখুন"></textarea>
+                </div>
+                
+                <button id="saveCustomization" class="btn">পরিবর্তনগুলো সংরক্ষণ করুন</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ম্যানেজমেন্ট সেকশন -->
+    <section id="management" class="container">
+        <h2 class="section-title">ইভেন্ট ব্যবস্থাপনা সম্পর্কে</h2>
+        
+        <div class="management-info fade-in">
+            <h3>আপনার ইভেন্ট ব্যবস্থাপনার জন্য কিছু পরামর্শ</h3>
+            <p>একটি সফল ইভেন্ট ব্যবস্থাপনার জন্য কিছু গুরুত্বপূর্ণ দিক:</p>
+            <ul>
+                <li><span class="highlight">পরিকল্পনা:</span> ইভেন্টের কমপক্ষে ৩-৬ মাস আগে থেকে পরিকল্পনা শুরু করুন।</li>
+                <li><span class="highlight">বাজেট:</span> একটি বাস্তবসম্মত বাজেট নির্ধারণ করুন এবং তা মেনে চলার চেষ্টা করুন।</li>
+                <li><span class="highlight">ভেন্যু নির্বাচন:</span> ইভেন্টের ধরন এবং অতিথি সংখ্যা অনুযায়ী উপযুক্ত ভেন্যু নির্বাচন করুন।</li>
+                <li><span class="highlight">সুপারিশ:</span> বিশ্বস্ত সেবা প্রদানকারী নির্বাচন করুন এবং তাদের সাথে চুক্তি করুন।</li>
+                <li><span class="highlight">মার্কেটিং:</span> সোশ্যাল মিডিয়া এবং অন্যান্য চ্যানেলের মাধ্যমে ইভেন্টের প্রচারণা করুন।</li>
+                <li><span class="highlight">ব্যাকআপ প্ল্যান:</span> যেকোনো জরুরি পরিস্থিতির জন্য বিকল্প পরিকল্পনা প্রস্তুত রাখুন।</li>
+            </ul>
+            <p>আপনার ইভেন্ট সফল করতে আমরা সবসময় পাশে আছি। আমাদের অভিজ্ঞ টিম আপনাকে সাহায্য করবে একটি স্মরণীয় ইভেন্ট আয়োজনে। আমাদের সাথে যোগাযোগ করুন যেকোনো প্রয়োজনে।</p>
+        </div>
+    </section>
+
+    <!-- ফুটার -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 id="footerTitle">আপনার ইভেন্ট ব্যবস্থাপনা</h3>
+                    <p id="footerDescription">সকল ধরনের ইভেন্টের একক সমাধান। আমরা আপনার ইভেন্টকে করে তুলি অসাধারণ।</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>দ্রুত লিংক</h3>
+                    <a href="#">হোম</a>
+                    <a href="#events">ইভেন্টসমূহ</a>
+                    <a href="#customize">কাস্টমাইজ</a>
+                    <a href="#management">ব্যবস্থাপনা</a>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>যোগাযোগ করুন</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> ঢাকা, বাংলাদেশ</p>
+                    <p><i class="fas fa-phone"></i> +৮৮০ ১৭XX-XXXXXX</p>
+                    <p><i class="fas fa-envelope"></i> info@yourevent.com</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; ২০২৩ আপনার ইভেন্ট ব্যবস্থাপনা। সর্বস্বত্ব সংরক্ষিত।</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ইভেন্ট ডাটা
+        const eventsData = [
+            {
+                id: 1,
+                title: "বাংলা নববর্ষ উৎসব",
+                date: "১৪ এপ্রিল, ২০২৪",
+                location: "ঢাকা শহর",
+                description: "বাংলা নববর্ষের রঙিন শোভাযাত্রা ও সাংস্কৃতিক অনুষ্ঠান।",
+                image: "https://images.unsplash.com/photo-1528164344705-47542687000d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 2,
+                title: "কর্পোরেট বার্ষিক সম্মেলন",
+                date: "২৫ মে, ২০২৪",
+                location: "রেডিসন হোটেল, ঢাকা",
+                description: "আধুনিক ব্যবসায়িক কৌশল ও নেটওয়ার্কিং এর সুযোগ।",
+                image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            },
+            {
+                id: 3,
+                title: "বিয়ের রিসেপশন",
+                date: "১০ জুন, ২০২৪",
+                location: "লেকশোর হোটেল",
+                description: "ঐতিহ্যবাহী ও আধুনিক মিশ্রণে বিশেষ দিনের আয়োজন।",
+                image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80"
+            }
+        ];
+
+        // DOM এলিমেন্টস
+        const eventsContainer = document.querySelector('.events-container');
+        const siteTitle = document.getElementById('siteTitle');
+        const footerTitle = document.getElementById('footerTitle');
+        const footerDescription = document.getElementById('footerDescription');
+        const logoImage = document.getElementById('logoImage');
+        const imagePreview = document.getElementById('imagePreview');
+        const titleInput = document.getElementById('titleInput');
+        const sloganInput = document.getElementById('sloganInput');
+        const imageInput = document.getElementById('imageInput');
+        const saveButton = document.getElementById('saveCustomization');
+
+        // ইভেন্ট কার্ড তৈরি
+        function renderEvents() {
+            eventsContainer.innerHTML = '';
+            
+            eventsData.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card fade-in';
+                eventCard.innerHTML = `
+                    <img src="${event.image}" alt="${event.title}" class="event-image">
+                    <div class="event-content">
+                        <h3>${event.title}</h3>
+                        <div class="event-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${event.date}</span>
+                            <span><i class="fas fa-map-marker-alt"></i> ${event.location}</span>
+                        </div>
+                        <p>${event.description}</p>
+                    </div>
+                `;
+                
+                eventsContainer.appendChild(eventCard);
+            });
+        }
+
+        // ইমেজ প্রিভিউ ফাংশন
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                imagePreview.src = reader.result;
+            }
+            if (event.target.files[0]) {
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        }
+
+        // কাস্টমাইজেশন সংরক্ষণ
+        function saveCustomization() {
+            // শিরোনাম আপডেট
+            if (titleInput.value.trim()) {
+                siteTitle.textContent = titleInput.value;
+                footerTitle.textContent = titleInput.value;
+            }
+            
+            // স্লোগান আপডেট
+            if (sloganInput.value.trim()) {
+                footerDescription.textContent = sloganInput.value;
+            }
+            
+            // ইমেজ আপডেট
+            if (imageInput.files && imageInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    logoImage.src = e.target.result;
+                    imagePreview.src = e.target.result;
+                }
+                reader.readAsDataURL(imageInput.files[0]);
+            }
+            
+            // সফল বার্তা
+            alert('কাস্টমাইজেশন সফলভাবে সংরক্ষিত হয়েছে!');
+            
+            // ফর্ম রিসেট
+            titleInput.value = '';
+            sloganInput.value = '';
+            imageInput.value = '';
+        }
+
+        // ইভেন্ট লিসেনার যোগ করা
+        document.addEventListener('DOMContentLoaded', function() {
+            // ইভেন্ট রেন্ডার
+            renderEvents();
+            
+            // ইমেজ প্রিভিউ ইভেন্ট
+            imageInput.addEventListener('change', previewImage);
+            
+            // সংরক্ষণ বাটন ইভেন্ট
+            saveButton.addEventListener('click', saveCustomization);
+            
+            // নেভিগেশন লিংকগুলোর জন্য স্ক্রোল স্মুথ করা
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    if (targetId !== '#') {
+                        const targetSection = document.querySelector(targetId);
+                        if (targetSection) {
+                            window.scrollTo({
+                                top: targetSection.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // ম্যানেজমেন্ট সেকশনে অ্যানিমেশন যোগ করা
+            const managementSection = document.querySelector('.management-info');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            observer.observe(managementSection);
+        });
+
+        // উদাহরণ স্বরূপ কিছু কাস্টমাইজেশন সেট করা
+        window.onload = function() {
+            titleInput.value = "আমার ইভেন্ট ব্যবস্থাপনা";
+            sloganInput.value = "বিশেষ দিনগুলোকে আরও বিশেষ করে তোলার জন্য";
+        };
+    </script>
+</body>
+</html>
